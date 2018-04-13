@@ -2,10 +2,12 @@ package com.smartystreets.api
 
 import scala.concurrent.Future
 import io.youi.net._
-import io.circe.generic.auto._
+import io.circe.generic.extras.auto._
 
 class USStreetAddress(instance: SmartyStreets) {
   private lazy val baseURL = url"https://us-street.api.smartystreets.com/street-address"
+
+  import instance._
 
   def apply(street: Option[String] = None,
             street2: Option[String] = None,
@@ -36,7 +38,6 @@ class USStreetAddress(instance: SmartyStreets) {
       ot("match", if (matchStrategy != MatchOutputStrategy.Strict) Some(matchStrategy.value) else None),
       ot("input_id", inputId)
     ).flatten.toMap
-    val url = instance.url(baseURL, params)
-    instance.client.call[List[StreetAddress]](url)
+    client.call[List[StreetAddress]](url(baseURL, params))
   }
 }

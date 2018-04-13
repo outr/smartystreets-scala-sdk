@@ -1,8 +1,8 @@
 package com.smartystreets.api
 
-case class AddressAnalysis(dpv_match_code: String,
-                           dpv_footnotes: String,
-                           dpv_cmra: String,
-                           dpv_vacant: String,
+case class AddressAnalysis(dpvMatchCode: String,
+                           dpvFootnotes: String,
+                           dpvCmra: String,
+                           dpvVacant: String,
                            active: String,
                            footnotes: String)

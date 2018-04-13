@@ -1,5 +1,6 @@
 package com.smartystreets.api
 
+import io.circe.generic.extras.Configuration
 import io.youi.client.HttpClient
 import io.youi.net._
 import profig.Profig
@@ -10,7 +11,7 @@ import scala.concurrent.duration.Duration
 class SmartyStreets(authId: String = SmartyStreets.authId,
                     authToken: String = SmartyStreets.authToken) {
   private[api] lazy val client = new HttpClient()
-
+  private[api] implicit val customConfig: Configuration = Configuration.default.withDefaults.withSnakeCaseMemberNames
   private[api] def url(baseURL: URL, params: Map[String, String]): URL = {
     baseURL.withParam("auth-id", authId).withParam("auth-token", authToken).withParams(params)
   }

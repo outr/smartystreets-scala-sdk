@@ -4,6 +4,7 @@ import scala.concurrent.Future
 import io.youi.net._
 import io.circe.generic.extras.auto._
 import SmartyStreets._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class USStreetAddress(instance: SmartyStreets) {
   private lazy val baseURL = url"https://us-street.api.smartystreets.com/street-address"

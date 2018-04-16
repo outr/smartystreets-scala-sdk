@@ -54,4 +54,4 @@ val validated: Future[List[Zip]] = ss.zip.us(zipcode = Some("84101"))
 
 ## Limitations
 
-Currently, no support has been added for international validations.
+Currently, no support has been added for international validations or autocompletion.

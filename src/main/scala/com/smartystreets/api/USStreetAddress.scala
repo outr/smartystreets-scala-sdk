@@ -3,6 +3,7 @@ package com.smartystreets.api
 import scala.concurrent.Future
 import io.youi.net._
 import io.circe.generic.extras.auto._
+import SmartyStreets._
 
 class USStreetAddress(instance: SmartyStreets) {
   private lazy val baseURL = url"https://us-street.api.smartystreets.com/street-address"
@@ -21,23 +22,30 @@ class USStreetAddress(instance: SmartyStreets) {
             candidates: Int = 1,
             matchStrategy: MatchOutputStrategy = MatchOutputStrategy.Strict,
             inputId: Option[String] = None): Future[List[StreetAddress]] = {
-    def ot(name: String, o: Option[String]): Option[(String, String)] = {
-      o.map(name -> _)
+    val q = USStreetQuery(
+      street = street,
+      street2 = street2,
+      secondary = secondary,
+      city = city,
+      state = state,
+      zip = zip,
+      lastLine = lastLine,
+      addressee = addressee,
+      urbanization = urbanization,
+      candidates = candidates,
+      matchStrategy = matchStrategy,
+      inputId = inputId)
+    client.call[List[StreetAddress]](url(baseURL, q.params))
+  }
+
+  def apply(addresses: USStreetQuery*): Future[List[StreetAddress]] = {
+    val list = addresses.toList
+    client.restful[List[USStreetQuery], List[StreetAddress]](url(baseURL), list.take(100)).flatMap { results =>
+      if (list.size > 100) {
+        apply(list.drop(100): _*).map(results ::: _)
+      } else {
+        Future.successful(results)
+      }
     }
-    val params = List(
-      ot("street", street),
-      ot("street2", street2),
-      ot("secondary", secondary),
-      ot("city", city),
-      ot("state", state),
-      ot("zipcode", zip),
-      ot("lastline", lastLine),
-      ot("addressee", addressee),
-      ot("urbanization", urbanization),
-      ot("candidates", if (candidates != 1) Some(candidates.toString) else None),
-      ot("match", if (matchStrategy != MatchOutputStrategy.Strict) Some(matchStrategy.value) else None),
-      ot("input_id", inputId)
-    ).flatten.toMap
-    client.call[List[StreetAddress]](url(baseURL, params))
   }
 }

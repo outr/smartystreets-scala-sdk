@@ -5,4 +5,8 @@ case class AddressAnalysis(dpvMatchCode: String,
                            dpvCmra: String,
                            dpvVacant: String,
                            active: String,
-                           footnotes: String)
+                           ewsMatch: Option[String],
+                           footnotes: String,
+                           lacslinkCode: Option[String],
+                           lacslinkIndicator: Option[String],
+                           suitelinkMatch: Option[String])

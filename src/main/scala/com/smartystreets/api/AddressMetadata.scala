@@ -15,4 +15,4 @@ case class AddressMetadata(recordType: String,
                            precision: String,
                            timeZone: String,
                            utcOffset: Int,
-                           dst: Boolean)
+                           dst: Option[Boolean])

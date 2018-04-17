@@ -1,6 +1,6 @@
 package spec
 
-import com.smartystreets.api.{SmartyStreets, ZipStatus}
+import com.smartystreets.api.{CityState, SmartyStreets, ZipStatus}
 import org.scalatest.{AsyncWordSpec, Matchers}
 import profig.Profig
 
@@ -27,6 +27,13 @@ class CornerCaseSpec extends AsyncWordSpec with Matchers {
         zip.reason should be(Some("Invalid city for the given state."))
         zip.cityStates should be(Nil)
         zip.zipcodes should be(Nil)
+      }
+    }
+    "properly support a city and zip" in {
+      ss.zip.us(city = Some("Stilwell"), zipcode = Some("74960")).map { zip =>
+        zip.status should be(ZipStatus.Success)
+        zip.reason should be(None)
+        zip.cityStates should be(List(CityState("Stilwell", "OK", "Oklahoma", mailableCity = true)))
       }
     }
     "properly return for a valid address" in {

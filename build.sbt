@@ -1,10 +1,11 @@
 name := "smartystreets-scala-sdk"
 organization := "com.outr"
-version := "1.0.0"
+version := "1.0.1"
 scalaVersion := "2.12.5"
 crossScalaVersions := List("2.12.5", "2.11.12")
 resolvers += Resolver.sonatypeRepo("releases")
 resolvers += Resolver.sonatypeRepo("snapshots")
+fork := true
 
 publishTo in ThisBuild := sonatypePublishTo.value
 sonatypeProfileName in ThisBuild := "com.outr"
@@ -24,7 +25,11 @@ developers in ThisBuild := List(
 
 
 val youiVersion = "0.9.0-M8"
+val scalacticVersion = "3.0.5"
+val scalaTestVersion = "3.0.5"
 
 libraryDependencies ++= Seq(
-  "io.youi" %% "youi-client" % youiVersion
+  "io.youi" %% "youi-client" % youiVersion,
+  "org.scalactic" %% "scalactic" % scalacticVersion % "test",
+  "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
 )

@@ -1,8 +1,8 @@
 package com.smartystreets.api
 
 case class AddressComponents(urbanization: Option[String],
-                             primaryNumber: String,
-                             streetName: String,
+                             primaryNumber: Option[String],
+                             streetName: Option[String],
                              streetPredirection: Option[String],
                              streetPostdirection: Option[String],
                              streetSuffix: Option[String],
@@ -12,10 +12,10 @@ case class AddressComponents(urbanization: Option[String],
                              extraSecondaryDesignator: Option[String],
                              pmbDesignator: Option[String],
                              pbmNumber: Option[String],
-                             cityName: String,
+                             cityName: Option[String],
                              defaultCityName: Option[String],
-                             stateAbbreviation: String,
-                             zipcode: String,
-                             plus4Code: String,
-                             deliveryPoint: String,
-                             deliveryPointCheckDigit: String)
+                             stateAbbreviation: Option[String],
+                             zipcode: Option[String],
+                             plus4Code: Option[String],
+                             deliveryPoint: Option[String],
+                             deliveryPointCheckDigit: Option[String])

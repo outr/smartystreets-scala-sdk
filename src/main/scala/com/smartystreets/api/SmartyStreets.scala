@@ -18,8 +18,6 @@ class SmartyStreets(authId: String = SmartyStreets.authId,
   object zip {
     lazy val us: USZip = new USZip(SmartyStreets.this)
   }
-
-  def dispose(): Unit = client.dispose()
 }
 
 object SmartyStreets {

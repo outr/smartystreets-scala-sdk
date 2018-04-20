@@ -1,6 +1,6 @@
 package spec
 
-import com.smartystreets.api.{CityState, SmartyStreets, ZipStatus}
+import com.smartystreets.api.{CityState, SmartyStreets, USStreetQuery, ZipStatus}
 import org.scalatest.{AsyncWordSpec, Matchers}
 import profig.Profig
 
@@ -47,8 +47,8 @@ class CornerCaseSpec extends AsyncWordSpec with Matchers {
         val address = addresses.head
         address.deliveryLine_1 should be("1600 Amphitheatre Pkwy")
         address.deliveryLine_2 should be(None)
-        address.components.cityName should be("Mountain View")
-        address.components.stateAbbreviation should be("CA")
+        address.components.cityName should be(Some("Mountain View"))
+        address.components.stateAbbreviation should be(Some("CA"))
       }
     }
     "properly support a bad city in address" in {
@@ -56,6 +56,32 @@ class CornerCaseSpec extends AsyncWordSpec with Matchers {
         street = Some("1600 Amphitheatre Parkway"),
         city = Some("Glasgow"),
         state = Some("California")
+      ).map { addresses =>
+        addresses.length should be(0)
+      }
+    }
+    "properly normalize a batch address" in {
+      ss.streets.us(USStreetQuery(
+        street = Some("1600 Amphitheatre Parkway"),
+        city = Some("Mountain View"),
+        state = Some("California"),
+        zip = Some("94043")
+      )).map { addresses =>
+        addresses.length should be(1)
+        val address = addresses.head
+        address.deliveryLine_1 should be("1600 Amphitheatre Pkwy")
+        address.deliveryLine_2 should be(None)
+        address.components.cityName should be(Some("Mountain View"))
+        address.components.stateAbbreviation should be(Some("CA"))
+      }
+    }
+    "properly handle a bad address" in {
+      //59 s -w on zion rd, stilwell, ok 74960, united states
+      ss.streets.us(
+        street = Some("59 S -W On Zion Rd"),
+        city = Some("Stilwell"),
+        state = Some("OK"),
+        zip = Some("74960")
       ).map { addresses =>
         addresses.length should be(0)
       }

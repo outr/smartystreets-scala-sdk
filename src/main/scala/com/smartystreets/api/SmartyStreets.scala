@@ -7,7 +7,12 @@ import profig.Profig
 
 class SmartyStreets(authId: String = SmartyStreets.authId,
                     authToken: String = SmartyStreets.authToken) {
-  private[api] lazy val client = new HttpClient()
+  private[api] lazy val client = new HttpClient(
+    http2 = true,
+    defaultRetry = 100,
+    defaultRetryDelay = 10.0,
+    timeoutInSeconds = 30.0
+  )
   private[api] def url(baseURL: URL, params: Map[String, String] = Map.empty): URL = {
     baseURL.withParam("auth-id", authId).withParam("auth-token", authToken).withParams(params)
   }

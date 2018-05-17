@@ -5,13 +5,16 @@ import io.youi.client.HttpClient
 import io.youi.net._
 import profig.Profig
 
+import scala.concurrent.duration._
+
 class SmartyStreets(authId: String = SmartyStreets.authId,
-                    authToken: String = SmartyStreets.authToken) {
+                    authToken: String = SmartyStreets.authToken,
+                    http2: Boolean = false) {
   private[api] lazy val client = new HttpClient(
-    http2 = true,
+    http2 = http2,
     defaultRetry = 100,
-    defaultRetryDelay = 10.0,
-    timeoutInSeconds = 30.0
+    defaultRetryDelay = 10.seconds,
+    timeout = 30.seconds
   )
   private[api] def url(baseURL: URL, params: Map[String, String] = Map.empty): URL = {
     baseURL.withParam("auth-id", authId).withParam("auth-token", authToken).withParams(params)

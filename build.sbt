@@ -1,6 +1,6 @@
 name := "smartystreets-scala-sdk"
 organization := "com.outr"
-version := "1.0.4"
+version := "1.0.5-SNAPSHOT"
 scalaVersion := "2.12.6"
 crossScalaVersions := List("2.12.6", "2.11.12")
 resolvers += Resolver.sonatypeRepo("releases")
@@ -24,7 +24,7 @@ developers in ThisBuild := List(
 )
 
 
-val youiVersion = "0.9.0-M13"
+val youiVersion = "0.9.0-M14"
 val scalacticVersion = "3.0.5"
 val scalaTestVersion = "3.0.5"
 

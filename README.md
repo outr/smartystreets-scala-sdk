@@ -4,7 +4,7 @@ Scala SDK for SmartyStreets (https://smartystreets.com)
 ## SBT Configuration
 
 ```
-libraryDependencies += "com.outr" %% "smartystreets-scala-sdk" % "1.0.0"
+libraryDependencies += "com.outr" %% "smartystreets-scala-sdk" % "1.0.6"
 ```
 
 ## Initialization

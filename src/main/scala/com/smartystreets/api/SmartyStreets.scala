@@ -10,11 +10,9 @@ import scala.concurrent.duration._
 class SmartyStreets(authId: String = SmartyStreets.authId,
                     authToken: String = SmartyStreets.authToken,
                     http2: Boolean = false) {
-  private[api] lazy val client = new HttpClient(
-    http2 = http2,
-    defaultRetry = 100,
-    defaultRetryDelay = 10.seconds,
-    timeout = 30.seconds
+  private[api] lazy val client = HttpClient(
+    defaultRetries = 100,
+    defaultRetryDelay = 10.seconds
   )
   private[api] def url(baseURL: URL, params: Map[String, String] = Map.empty): URL = {
     baseURL.withParam("auth-id", authId).withParam("auth-token", authToken).withParams(params)

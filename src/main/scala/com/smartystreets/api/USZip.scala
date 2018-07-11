@@ -37,9 +37,9 @@ class USZip(instance: SmartyStreets) {
 
   def apply(zips: ZipQuery*): Future[List[Zip]] = {
     val list = zips.toList
-    client.restful[List[ZipQuery], List[Zip]](url(baseURL), list.take(100)).flatMap { results =>
-      if (list.size > 100) {
-        apply(list.drop(100): _*).map(results ::: _)
+    client.restful[List[ZipQuery], List[Zip]](url(baseURL), list.take(groupSize)).flatMap { results =>
+      if (list.size > groupSize) {
+        apply(list.drop(groupSize): _*).map(results ::: _)
       } else {
         Future.successful(results)
       }

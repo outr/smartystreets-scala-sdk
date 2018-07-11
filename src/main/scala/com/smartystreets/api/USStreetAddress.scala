@@ -41,9 +41,9 @@ class USStreetAddress(instance: SmartyStreets) {
 
   def apply(addresses: USStreetQuery*): Future[List[StreetAddress]] = {
     val list = addresses.toList
-    client.restful[List[USStreetQuery], List[StreetAddress]](url(baseURL), list.take(100)).flatMap { results =>
-      if (list.size > 100) {
-        apply(list.drop(100): _*).map(results ::: _)
+    client.restful[List[USStreetQuery], List[StreetAddress]](url(baseURL), list.take(groupSize)).flatMap { results =>
+      if (list.size > groupSize) {
+        apply(list.drop(groupSize): _*).map(results ::: _)
       } else {
         Future.successful(results)
       }

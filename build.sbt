@@ -1,6 +1,6 @@
 name := "smartystreets-scala-sdk"
 organization := "com.outr"
-version := "1.0.6"
+version := "1.0.7"
 scalaVersion := "2.12.6"
 crossScalaVersions := List("2.12.6", "2.11.12")
 resolvers += Resolver.sonatypeRepo("releases")

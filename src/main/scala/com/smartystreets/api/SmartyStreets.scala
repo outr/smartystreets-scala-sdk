@@ -35,9 +35,9 @@ object SmartyStreets {
     .withSnakeCaseConstructorNames
 
   def authId: String = Profig("smartystreets.authId")
-    .as[Option[String]]
+    .opt[String]
     .getOrElse(throw new RuntimeException(s"No configuration defined for smartystreets.authId"))
   def authToken: String = Profig("smartystreets.authToken")
-    .as[Option[String]]
+    .opt[String]
     .getOrElse(throw new RuntimeException(s"No configuration defined for smartystreets.authToken"))
 }

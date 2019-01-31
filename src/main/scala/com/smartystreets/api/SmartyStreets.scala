@@ -7,14 +7,14 @@ import profig.Profig
 
 import scala.concurrent.duration._
 
-class SmartyStreets(authId: String = SmartyStreets.authId,
-                    authToken: String = SmartyStreets.authToken,
-                    http2: Boolean = false,
-                    val groupSize: Int = 100) {
+class SmartyStreets private(authId: String,
+                            authToken: String,
+                            val groupSize: Int = 100) {
   private[api] lazy val client = HttpClient(HttpClientConfig(
     retries = 100,
     retryDelay = 10.seconds
   ))
+
   private[api] def url(baseURL: URL, params: Map[String, String] = Map.empty): URL = {
     baseURL.withParam("auth-id", authId).withParam("auth-token", authToken).withParams(params)
   }
@@ -22,9 +22,11 @@ class SmartyStreets(authId: String = SmartyStreets.authId,
   object streets {
     lazy val us: USStreetAddress = new USStreetAddress(SmartyStreets.this)
   }
+
   object zip {
     lazy val us: USZip = new USZip(SmartyStreets.this)
   }
+
 }
 
 object SmartyStreets {
@@ -34,10 +36,23 @@ object SmartyStreets {
     .withSnakeCaseMemberNames
     .withSnakeCaseConstructorNames
 
-  def authId: String = Profig("smartystreets.authId")
+  def authId: Option[String] = Profig("smartystreets.authId")
     .opt[String]
-    .getOrElse(throw new RuntimeException(s"No configuration defined for smartystreets.authId"))
-  def authToken: String = Profig("smartystreets.authToken")
+
+  def authToken: Option[String] = Profig("smartystreets.authToken")
     .opt[String]
-    .getOrElse(throw new RuntimeException(s"No configuration defined for smartystreets.authToken"))
+
+  def groupSize: Int = Profig("smartystreets.groupSize").as[Int](100)
+
+  def get(authId: Option[String] = authId,
+          authToken: Option[String] = authToken,
+          groupSize: Int = groupSize): Option[SmartyStreets] = authId.flatMap(aid => authToken.map(at => aid -> at)) match {
+    case Some((aid, at)) => Some(new SmartyStreets(aid, at, groupSize))
+    case None => None
+  }
+
+  def apply(authId: Option[String] = authId,
+            authToken: Option[String] = authToken,
+            groupSize: Int = groupSize): SmartyStreets = get(authId, authToken, groupSize)
+    .getOrElse(throw new RuntimeException("No configuration defined for smartystreets.authId or authToken"))
 }

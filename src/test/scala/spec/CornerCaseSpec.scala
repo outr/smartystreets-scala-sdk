@@ -5,7 +5,7 @@ import org.scalatest.{AsyncWordSpec, Matchers}
 import profig.Profig
 
 class CornerCaseSpec extends AsyncWordSpec with Matchers {
-  private lazy val ss = new SmartyStreets()
+  private lazy val ss = SmartyStreets()
 
   "Corner Cases" should {
     "initialize properly" in {

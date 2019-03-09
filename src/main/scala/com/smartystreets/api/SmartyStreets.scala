@@ -11,7 +11,7 @@ class SmartyStreets private(authId: String,
                             authToken: String,
                             val groupSize: Int = 100) {
   private[api] lazy val client = HttpClient(HttpClientConfig(
-    retries = 100,
+    retries = 1,
     retryDelay = 10.seconds
   ))
 

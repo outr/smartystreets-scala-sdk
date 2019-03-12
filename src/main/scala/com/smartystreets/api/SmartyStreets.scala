@@ -9,10 +9,12 @@ import scala.concurrent.duration._
 
 class SmartyStreets private(authId: String,
                             authToken: String,
-                            val groupSize: Int = 100) {
+                            val groupSize: Int = 100,
+                            val retries: Int = 1,
+                            val retryDelay: FiniteDuration = 10.seconds) {
   private[api] lazy val client = HttpClient(HttpClientConfig(
-    retries = 100,
-    retryDelay = 10.seconds
+    retries = retries,
+    retryDelay = retryDelay
   ))
 
   private[api] def url(baseURL: URL, params: Map[String, String] = Map.empty): URL = {

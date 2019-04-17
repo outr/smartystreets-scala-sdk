@@ -11,12 +11,12 @@ case class USStreetQuery(street: Option[String] = None,
                          city: Option[String] = None,
                          state: Option[String] = None,
                          zip: Option[String] = None,
-                         lastLine: Option[String] = None,
+                         lastline: Option[String] = None,
                          addressee: Option[String] = None,
                          urbanization: Option[String] = None,
                          candidates: Int = 1,
                          matchStrategy: MatchOutputStrategy = MatchOutputStrategy.Strict,
-                         inputId: Option[String] = None) {
+                         input_id: Option[String] = None) {
   private def ot(name: String, o: Option[String]): Option[(String, String)] = {
     o.map(name -> _)
   }
@@ -28,12 +28,12 @@ case class USStreetQuery(street: Option[String] = None,
     ot("city", city),
     ot("state", state),
     ot("zipcode", zip),
-    ot("lastline", lastLine),
+    ot("lastline", lastline),
     ot("addressee", addressee),
     ot("urbanization", urbanization),
     ot("candidates", if (candidates != 1) Some(candidates.toString) else None),
     ot("match", if (matchStrategy != MatchOutputStrategy.Strict) Some(matchStrategy.value) else None),
-    ot("input_id", inputId)
+    ot("input_id", input_id)
   ).flatten.toMap
 
   lazy val json: Json = this.asJson

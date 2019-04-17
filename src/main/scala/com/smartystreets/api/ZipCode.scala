@@ -1,13 +1,13 @@
 package com.smartystreets.api
 
 case class ZipCode(zipcode: String,
-                   zipcodeType: String,
-                   defaultCity: String,
-                   countyFips: String,
-                   countyName: String,
-                   stateAbbreviation: String,
+                   zipcode_type: String,
+                   default_city: String,
+                   county_fips: String,
+                   county_name: String,
+                   state_abbreviation: String,
                    state: String,
                    latitude: Double,
                    longitude: Double,
                    precision: String,
-                   alternateCounties: List[County] = Nil)
+                   alternate_counties: List[County] = Nil)

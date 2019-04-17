@@ -1,6 +1,6 @@
 package com.smartystreets.api
 
 case class CityState(city: String,
-                     stateAbbreviation: String,
+                     state_abbreviation: String,
                      state: String,
-                     mailableCity: Boolean)
+                     mailable_city: Boolean)

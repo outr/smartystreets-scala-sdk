@@ -2,8 +2,6 @@ package com.smartystreets.api
 
 import scala.concurrent.Future
 import io.youi.net._
-import io.circe.generic.extras.auto._
-import SmartyStreets._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class USStreetAddress(instance: SmartyStreets) {
@@ -30,18 +28,18 @@ class USStreetAddress(instance: SmartyStreets) {
       city = city,
       state = state,
       zip = zip,
-      lastLine = lastLine,
+      lastline = lastLine,
       addressee = addressee,
       urbanization = urbanization,
       candidates = candidates,
       matchStrategy = matchStrategy,
-      inputId = inputId)
-    client.call[List[StreetAddress]](url(baseURL, q.params))
+      input_id = inputId)
+    client.url(url(baseURL, q.params)).call[List[StreetAddress]]
   }
 
   def apply(addresses: USStreetQuery*): Future[List[StreetAddress]] = {
     val list = addresses.toList
-    client.restful[List[USStreetQuery], List[StreetAddress]](url(baseURL), list.take(groupSize)).flatMap { results =>
+    client.url(url(baseURL)).restful[List[USStreetQuery], List[StreetAddress]](list.take(groupSize)).flatMap { results =>
       if (list.size > groupSize) {
         apply(list.drop(groupSize): _*).map(results ::: _)
       } else {

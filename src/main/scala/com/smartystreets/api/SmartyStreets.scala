@@ -1,7 +1,7 @@
 package com.smartystreets.api
 
 import io.circe.generic.extras.Configuration
-import io.youi.client.{HttpClient, HttpClientConfig}
+import io.youi.client.HttpClient
 import io.youi.net._
 import profig.Profig
 
@@ -12,10 +12,9 @@ class SmartyStreets private(authId: String,
                             val groupSize: Int = 100,
                             val retries: Int = 1,
                             val retryDelay: FiniteDuration = 10.seconds) {
-  private[api] lazy val client = HttpClient(HttpClientConfig(
-    retries = retries,
-    retryDelay = retryDelay
-  ))
+  private[api] lazy val client = HttpClient
+    .copy(retryDelay = retryDelay)
+    .retries(retries)
 
   private[api] def url(baseURL: URL, params: Map[String, String] = Map.empty): URL = {
     baseURL.withParam("auth-id", authId).withParam("auth-token", authToken).withParams(params)

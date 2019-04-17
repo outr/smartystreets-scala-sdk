@@ -1,12 +1,12 @@
 package com.smartystreets.api
 
-case class AddressAnalysis(dpvMatchCode: Option[String],
-                           dpvFootnotes: Option[String],
-                           dpvCmra: Option[String],
-                           dpvVacant: Option[String],
+case class AddressAnalysis(dpv_match_code: Option[String],
+                           dpv_footnotes: Option[String],
+                           dpv_cmra: Option[String],
+                           dpv_vacant: Option[String],
                            active: Option[String],
-                           ewsMatch: Option[String],
+                           ews_match: Option[String],
                            footnotes: Option[String],
-                           lacslinkCode: Option[String],
-                           lacslinkIndicator: Option[String],
-                           suitelinkMatch: Option[String])
+                           lacslink_code: Option[String],
+                           lacslink_indicator: Option[String],
+                           suitelink_match: Option[String])

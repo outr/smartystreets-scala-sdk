@@ -17,7 +17,7 @@ class CornerCaseSpec extends AsyncWordSpec with Matchers {
       ss.zip.us(city = Some("Glasgow"), state = Some("Scotland")).map { zip =>
         zip.status should be(ZipStatus.InvalidState)
         zip.reason should be(Some("Invalid state name or abbreviation."))
-        zip.cityStates should be(Nil)
+        zip.city_states should be(Nil)
         zip.zipcodes should be(Nil)
       }
     }
@@ -25,7 +25,7 @@ class CornerCaseSpec extends AsyncWordSpec with Matchers {
       ss.zip.us(city = Some("Glasgow"), state = Some("Oklahoma")).map { zip =>
         zip.status should be(ZipStatus.InvalidCity)
         zip.reason should be(Some("Invalid city for the given state."))
-        zip.cityStates should be(Nil)
+        zip.city_states should be(Nil)
         zip.zipcodes should be(Nil)
       }
     }
@@ -33,7 +33,7 @@ class CornerCaseSpec extends AsyncWordSpec with Matchers {
       ss.zip.us(city = Some("Stilwell"), zipcode = Some("74960")).map { zip =>
         zip.status should be(ZipStatus.Success)
         zip.reason should be(None)
-        zip.cityStates should be(List(CityState("Stilwell", "OK", "Oklahoma", mailableCity = true)))
+        zip.city_states should be(List(CityState("Stilwell", "OK", "Oklahoma", mailable_city = true)))
       }
     }
     "properly return for a valid address" in {
@@ -45,10 +45,10 @@ class CornerCaseSpec extends AsyncWordSpec with Matchers {
       ).map { addresses =>
         addresses.length should be(1)
         val address = addresses.head
-        address.deliveryLine_1 should be("1600 Amphitheatre Pkwy")
-        address.deliveryLine_2 should be(None)
-        address.components.cityName should be(Some("Mountain View"))
-        address.components.stateAbbreviation should be(Some("CA"))
+        address.delivery_line_1 should be("1600 Amphitheatre Pkwy")
+        address.delivery_line_2 should be(None)
+        address.components.city_name should be(Some("Mountain View"))
+        address.components.state_abbreviation should be(Some("CA"))
       }
     }
     "properly support a bad city in address" in {
@@ -69,10 +69,10 @@ class CornerCaseSpec extends AsyncWordSpec with Matchers {
       )).map { addresses =>
         addresses.length should be(1)
         val address = addresses.head
-        address.deliveryLine_1 should be("1600 Amphitheatre Pkwy")
-        address.deliveryLine_2 should be(None)
-        address.components.cityName should be(Some("Mountain View"))
-        address.components.stateAbbreviation should be(Some("CA"))
+        address.delivery_line_1 should be("1600 Amphitheatre Pkwy")
+        address.delivery_line_2 should be(None)
+        address.components.city_name should be(Some("Mountain View"))
+        address.components.state_abbreviation should be(Some("CA"))
       }
     }
     "properly handle a bad address" in {

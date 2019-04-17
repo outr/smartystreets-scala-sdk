@@ -2,8 +2,6 @@ package com.smartystreets.api
 
 import scala.concurrent.Future
 import io.youi.net._
-import io.circe.generic.extras.auto._
-import SmartyStreets._
 import io.circe.Decoder.Result
 import io.circe.{Decoder, HCursor}
 
@@ -32,12 +30,12 @@ class USZip(instance: SmartyStreets) {
             zipcode: Option[String] = None,
             inputId: Option[String] = None): Future[Zip] = {
     val q = ZipQuery(city, state, zipcode, inputId)
-    client.call[List[Zip]](url(baseURL, q.params)).map(_.head)
+    client.url(url(baseURL, q.params)).call[List[Zip]].map(_.head)
   }
 
   def apply(zips: ZipQuery*): Future[List[Zip]] = {
     val list = zips.toList
-    client.restful[List[ZipQuery], List[Zip]](url(baseURL), list.take(groupSize)).flatMap { results =>
+    client.url(baseURL).restful[List[ZipQuery], List[Zip]](list.take(groupSize)).flatMap { results =>
       if (list.size > groupSize) {
         apply(list.drop(groupSize): _*).map(results ::: _)
       } else {

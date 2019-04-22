@@ -2,19 +2,33 @@ package com.smartystreets.api
 
 import io.circe.generic.extras.Configuration
 import io.youi.client.HttpClient
+import io.youi.client.intercept.Interceptor
+import io.youi.http.{HttpRequest, HttpResponse, HttpStatus}
 import io.youi.net._
 import profig.Profig
 
+import scala.concurrent.Future
 import scala.concurrent.duration._
 
 class SmartyStreets private(authId: String,
                             authToken: String,
                             val groupSize: Int = 100,
                             val retries: Int = 1,
-                            val retryDelay: FiniteDuration = 10.seconds) {
+                            val retryDelay: FiniteDuration = 10.seconds) extends Interceptor {
   private[api] lazy val client = HttpClient
     .copy(retryDelay = retryDelay)
     .retries(retries)
+    .interceptor(this)
+
+  override def before(request: HttpRequest): Future[HttpRequest] = Future.successful(request)
+
+  override def after(request: HttpRequest, response: HttpResponse): Future[HttpResponse] = {
+    if (response.status != HttpStatus.OK) {
+      scribe.warn(s"Sent: ${request.url} - ${request.content.map(_.asString)}")
+      scribe.warn(s"Received: ${response.content.map(_.asString)}")
+    }
+    Future.successful(response)
+  }
 
   private[api] def url(baseURL: URL, params: Map[String, String] = Map.empty): URL = {
     baseURL.withParam("auth-id", authId).withParam("auth-token", authToken).withParams(params)
@@ -27,7 +41,6 @@ class SmartyStreets private(authId: String,
   object zip {
     lazy val us: USZip = new USZip(SmartyStreets.this)
   }
-
 }
 
 object SmartyStreets {

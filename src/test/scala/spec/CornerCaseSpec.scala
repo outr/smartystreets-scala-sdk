@@ -35,6 +35,14 @@ class CornerCaseSpec extends AsyncWordSpec with Matchers {
         zip.zipcodes should be(Nil)
       }
     }
+    "properly support a city, state, and zip" in {
+      ss.zip.us(city = Some("Wainwright"), state = Some("AK"), zipcode = Some("99782")).map { zip =>
+        zip.status should be(ZipStatus.Success)
+        zip.reason should be(None)
+        zip.city_states should be(List(CityState("Wainwright", "AK", "Alaska", mailable_city = true)))
+        zip.zipcodes.map(zc => zc.latitude -> zc.longitude) should be(List((70.63694, -160.03833)))
+      }
+    }
     "properly support a city and zip" in {
       ss.zip.us(city = Some("Stilwell"), zipcode = Some("74960")).map { zip =>
         zip.status should be(ZipStatus.Success)
